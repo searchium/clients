@@ -11,7 +11,7 @@ class Client:
     def __init__(self, bucket, api_key):
         self._bucket = bucket
         self._key = api_key
-        self._apiurl = 'https://api.searchium.com/' + bucket + '/'
+        self._apiurl = 'https://api.searchium.com/'
         self._searchurl = 'http://s.searchium.com/' + bucket + '/?q='
         self.error = ''
 
@@ -22,7 +22,7 @@ class Client:
         try:
             data = json.dumps(doc)
             sig = self.signature(data)
-            url = self._apiurl + 'save/' + str(id) + '?signature=' + sig
+            url = self._apiurl + 'save/' + self._bucket + '/' + str(id) + '?signature=' + sig
             response = self.send_request(url, data)
             if response and response.get('ok'):
                 return response.get('id')
@@ -36,7 +36,7 @@ class Client:
         """
         try:
             sig = self.signature(id)
-            url = self._apiurl + 'get/' + str(id) + '?signature=' + sig
+            url = self._apiurl + 'get/' + self._bucket + '/' + str(id) + '?signature=' + sig
             response = self.send_request(url)
             if response and response.get('ok'):
                 return response.get('doc')
@@ -50,7 +50,7 @@ class Client:
         """
         try:
             sig = self.signature(id)
-            url = self._apiurl + 'delete/' + str(id) + '?signature=' + sig
+            url = self._apiurl + 'delete/' + self._bucket + '/' + str(id) + '?signature=' + sig
             response = self.send_request(url)
             if response and response.get('ok'):
                 return True

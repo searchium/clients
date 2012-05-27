@@ -22,7 +22,7 @@ class SearchiumClient
 
         $this->bucket = $bucket;
         $this->apikey = $apikey;
-        $this->apiurl = 'https://api.searchium.com/' . $this->bucket . '/';
+        $this->apiurl = 'https://api.searchium.com/';
         $this->searchurl = 'http://s.searchium.com/' . $this->bucket . '/?q=';
     }
 
@@ -40,7 +40,7 @@ class SearchiumClient
         }
 
         $sig = $this->signature($jsondoc);
-        $url = $this->apiurl . 'save/' . $id . '?signature=' . $sig;
+        $url = $this->apiurl . 'save/' . $this->bucket .'/'. $id . '?signature=' . $sig;
         $response = $this->send_request($url, $jsondoc);
         return $response['id'];
     }
@@ -52,7 +52,7 @@ class SearchiumClient
      */
     public function get($id) {
         $sig = $this->signature($id);
-        $url = $this->apiurl . 'get/' . $id . '?signature=' . $sig;
+        $url = $this->apiurl . 'get/' . $this->bucket .'/'. $id . '?signature=' . $sig;
         $response = $this->send_request($url, $jsondoc);     
         return $response['doc'];
     }
@@ -64,7 +64,7 @@ class SearchiumClient
      */
     public function delete($id) {
         $sig = $this->signature($id);
-        $url = $this->apiurl . 'delete/' . $id . '?signature=' . $sig;
+        $url = $this->apiurl . 'delete/' . $this->bucket .'/'. $id . '?signature=' . $sig;
         $response = $this->send_request($url, $jsondoc);
         return $response['ok'];
     }
